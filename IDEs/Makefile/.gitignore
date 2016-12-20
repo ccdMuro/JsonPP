@@ -23,3 +23,11 @@ src/.libs/
 stamp-h1
 
 
+build-stamp
+debian/libjsonpp.debhelper.log
+debian/libjsonpp.substvars
+debian/libjsonpp/
+../*.dsc
+../*.tar.gz
+../*.changes
+../*.deb
