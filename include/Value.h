@@ -60,6 +60,13 @@ public:
 	Value& operator[](const std::string& key);
 	Value& operator[](const int key);
 
+	explicit operator double() const { return _dobValue; }
+	explicit operator int() const { return _intValue; }
+	explicit operator bool() const { return _bolValue; }
+	explicit operator std::string () const { return _strValue; }
+	operator Object () const { return _objValue; }
+	operator Array () const { return _aryValue; }
+
 	friend std::ostream& operator<<(std::ostream& os, const Value& val);
 	
 	ValueType type();

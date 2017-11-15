@@ -1,6 +1,7 @@
 #include "JsonPP.h"
 
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -450,6 +451,13 @@ Value JsonPP::objectFromString(std::string jsonString)
 
 	// if all went right, return the smart pointer to the parent object
 	return newValue;
+}
+
+std::string JsonPP::stringFromObject ( Object& jsonObject )
+{
+	auto jss = std::stringstream {};
+	jss << jsonObject;
+	return jss.str();
 }
 
 }

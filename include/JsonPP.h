@@ -14,6 +14,7 @@ class JsonPP
 	static Value arrayFromString(std::string jsonArrayString);
 public:
 	static Value objectFromString(std::string jsonString);
+	static std::string stringFromObject ( Object& jsonObject );
 };
 
 }
