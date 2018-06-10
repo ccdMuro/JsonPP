@@ -455,7 +455,7 @@ Value JsonPP::objectFromString(std::string jsonString)
 
 std::string JsonPP::stringFromObject ( Object& jsonObject )
 {
-	auto jss = std::stringstream {};
+	std::stringstream jss;
 	jss << jsonObject;
 	return jss.str();
 }
