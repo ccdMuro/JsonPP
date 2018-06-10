@@ -22,7 +22,7 @@ Json:
 ```
 
 C++:
-```C++
+```cpp
 #include <JsonPP.h>
 using namespace Ccd::Json;
 
