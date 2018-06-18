@@ -58,7 +58,9 @@ public:
 	Value& operator=(Value&& other);
 	
 	Value& operator[](const std::string& key);
+	const Value& operator[](const std::string& key) const;
 	Value& operator[](const int key);
+	const Value& operator[](const int key) const;
 
 	explicit operator double() const { return _dobValue; }
 	explicit operator int() const { return _intValue; }
@@ -69,15 +71,15 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Value& val);
 	
-	ValueType type();
+	ValueType type() const;
 	
-	int toInt();
-	double toDouble();
-	std::string& toString();
-	bool toBool();
+	int toInt() const;
+	double toDouble() const;
+	const std::string& toString() const;
+	bool toBool() const;
 	
-	Array toArray();
-	Object toObject();
+	Array toArray() const;
+	Object toObject() const;
 };
 
 }
