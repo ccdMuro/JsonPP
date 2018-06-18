@@ -31,7 +31,7 @@ Value::Value ( Array&& array ) : _type ( ValueType::Array ), _aryValue ( move ( 
 
 Value::Value ( Object&& obj ) : _type ( ValueType::Object ), _objValue ( move ( obj ) ) {}
 
-Value::Value ( std::nullptr_t np ) : _type ( ValueType::Null ) {}
+Value::Value ( std::nullptr_t ) : _type ( ValueType::Null ) {}
 
 Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), _aryValue ( list ) {}
 

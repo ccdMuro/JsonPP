@@ -26,11 +26,11 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Release_RaspberryPi" CompilerType="Cross GCC ( arm-linux-gnueabihf )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-pedantic-errors;-Wfatal-errors;-g;-O0;-pedantic;-W;-std=c++11;-Wall;-fPIC" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-pedantic-errors;-Wfatal-errors;-O1;-pedantic;-W;-std=c++11;-Wall;-fPIC" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../../include"/>
       </Compiler>
-      <Linker Options="" Required="yes"/>
+      <Linker Options="-s" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).so" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
@@ -43,12 +43,7 @@
         <StartupCommands/>
       </Debugger>
       <PreBuild/>
-      <PostBuild>
-        <Command Enabled="yes">cp Release/JsonPP.so /opt/lib/pi</Command>
-        <Command Enabled="yes">cp ../../include/JsonPP.h /opt/include</Command>
-        <Command Enabled="yes">cp ../../include/Value.h /opt/include</Command>
-        <Command Enabled="yes">sshpass -p "raspberry" scp Release/JsonPP.so pi@200.150.100.85:/opt/lib/pi</Command>
-      </PostBuild>
+      <PostBuild/>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
         <CleanCommand/>
@@ -71,11 +66,11 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release_Ubuntu" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O1;-O;-O0;-O2;-std=c++14;-Wall;-fPIC" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-pedantic-errors;-O1;-pedantic;-W;-std=c++14;-Wall;-fPIC" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../../include"/>
       </Compiler>
-      <Linker Options="-Os" Required="yes"/>
+      <Linker Options="-s" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).so" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
@@ -88,11 +83,7 @@
         <StartupCommands/>
       </Debugger>
       <PreBuild/>
-      <PostBuild>
-        <Command Enabled="yes">cp Release/JsonPP.so /opt/lib</Command>
-        <Command Enabled="yes">cp ../../include/JsonPP.h /opt/include</Command>
-        <Command Enabled="yes">cp ../../include/Value.h /opt/include</Command>
-      </PostBuild>
+      <PostBuild/>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
         <CleanCommand/>
