@@ -33,11 +33,7 @@ Value::Value ( Object&& obj ) : _type ( ValueType::Object ), _objValue ( move ( 
 
 Value::Value ( std::nullptr_t ) : _type ( ValueType::Null ) {}
 
-<<<<<<< HEAD
 Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), _aryValue ( list ) {}
-=======
-Value::Value(const initializer_list<Value> list) : _type ( ValueType::Array ), _aryValue ( list ) {}
->>>>>>> fc06715cdf035e9d87b66c5410867101247fc219
 
 Value::Value ( const Value& other )
 {
