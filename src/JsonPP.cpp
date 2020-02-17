@@ -10,6 +10,9 @@ namespace Json {
 
 Value JsonPP::arrayFromString(std::string jsonString)
 {
+	// make shure that decimal delimiter is a dot '.'
+	std::setlocale(LC_NUMERIC, "C");
+
 	auto newArray = Array{};
 	auto newValue = Value(nullptr);
 
@@ -211,6 +214,8 @@ Value JsonPP::arrayFromString(std::string jsonString)
 
 Value JsonPP::objectFromString(std::string jsonString)
 {
+	// make shure that decimal delimiter is a dot '.'
+	std::setlocale(LC_NUMERIC, "C");
 	// prepare new struct
 	auto newJsonObject = Object{};
 	auto newValue = Value(nullptr);
@@ -462,3 +467,4 @@ std::string JsonPP::stringFromObject ( Object& jsonObject )
 
 }
 }
+
