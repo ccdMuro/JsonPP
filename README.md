@@ -1,7 +1,7 @@
 JsonPP
 ======
 
-A C++ Library providing a 'std::string' parser for JavaScript Object Notation. The STL container are in favor to represent the Json entities: Object, Array and Value.
+A C++ Library providing a `std::string` parser for JavaScript Object Notation. The STL container are in favor to represent the Json entities: Object, Array and Value.
 
 Requirements
 ------------
@@ -13,10 +13,10 @@ Code Example
 Json:
 ```json
 {
-	"user_name":"ccdMuro"
+	"user_name":"ccdMuro",
 	"user_data":{
-		"hobbys":["hacking", "gaming"],
-		"age":99
+		"hobbies":["coding", "gaming"],
+		"age":1337
 	}
 }
 ```
@@ -27,16 +27,36 @@ C++:
 using namespace Ccd::Json;
 
 ...
-/* get your Json somehow and store it into the std::string */
+// get your Json somehow and store it into the std::string
 ...
 
+// create Ccd::Json::Object from string
 auto jsonObject = JsonPP::objectFromString(myJsonString);
 
-/* now access the object values with the subscript operator[] */
+// now access the object values with the subscript operator[]
 auto userName = jsonObject["user_name"].toString();
-auto userAge = jsonObject["user_data"]["age"].toInt();
-auto hobbys = std::vector{};
-for ( auto item : jsonObject["user_data"]["hobbys"]){
-	hobbys = item.toString();
+
+// instead of the access method you can use an explicit cast
+auto userAge = stati_cast<int>(jsonObject["user_data"]["age"]);
+
+// STL container std::vector as Ccd::Json::Array backend 
+for ( auto hobby : jsonObject["user_data"]["hobbies"].toArray()){
+	// with stream operator<< support for std::iostream
+	std::cout << hobby;
 }
+
+// create your own data from scratch
+auto newObj = Ccd::Json::Object {
+		{"user_name","newUser"},
+		{"user_data", 
+			Ccd::Json::Object {
+				{"age", 42},
+				{"hobbies", { "reading", "painting" } }
+			}
+		}
+	};
+
+// and turn it into a std::string
+auto newJsonString = JsonPP::stringFromObject(newObj);
+
 ```
