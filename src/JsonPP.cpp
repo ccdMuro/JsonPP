@@ -458,13 +458,19 @@ Value JsonPP::objectFromString(std::string jsonString)
 	return newValue;
 }
 
-std::string JsonPP::stringFromObject ( Object& jsonObject )
+std::string JsonPP::stringFromObject ( const Object& jsonObject )
 {
 	std::stringstream jss;
 	jss << jsonObject;
 	return jss.str();
 }
 
+std::string JsonPP::stringFromArray( const Array& jsonArray )
+{
+	std::stringstream jss;
+	jss << jsonArray;
+	return jss.str();
+}
 }
 }
 
