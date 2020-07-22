@@ -10,9 +10,9 @@ namespace Json {
 
 class JsonPP
 {
-	static Value arrayFromString(std::string jsonArrayString);
 public:
 	static Value objectFromString(std::string jsonString);
+	static Value arrayFromString(std::string jsonArrayString);
 	static std::string stringFromObject ( Object& jsonObject );
 };
 
