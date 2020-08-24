@@ -7,7 +7,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
 	-I../../../include \
-	-std=c++11 \
+	-std=c++17 \
 	$(LIBJSONPP_CFLAGS)
 
 AM_CFLAGS =\

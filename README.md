@@ -5,7 +5,7 @@ A C++ Library providing a `std::string` parser for JavaScript Object Notation. T
 
 Requirements
 ------------
-C++11/14 standard is required to compile the library.
+C++17 standard is required to compile the library.
 
 Code Example
 ------------

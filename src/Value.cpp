@@ -11,51 +11,51 @@ namespace Json
 
 Value::Value() : _type ( ValueType::Null ) {}
 
-Value::Value ( const int value ) : _type ( ValueType::Int ), _intValue ( value ) { }
+Value::Value ( const int value ) : _type ( ValueType::Int ), m_value ( value ) { }
 
-Value::Value ( const double value ) : _type ( ValueType::Double ), _dobValue ( value ) {}
+Value::Value ( const double value ) : _type ( ValueType::Double ), m_value ( value ) {}
 
-Value::Value ( const bool value ) : _type ( ValueType::Bool ), _bolValue ( value ) {}
+Value::Value ( const bool value ) : _type ( ValueType::Bool ), m_value ( value ) {}
 
-Value::Value ( const std::string& value ) : _type ( ValueType::String ), _strValue ( value ) {}
+Value::Value ( const std::string& value ) : _type ( ValueType::String ), m_value ( value ) {}
 
-Value::Value ( const char* value ) : _type ( ValueType::String ), _strValue ( value ) {}
+Value::Value ( const char* value ) : _type ( ValueType::String ), m_value {std::move(std::string{value})} {}
 
-Value::Value ( const Array& array ) : _type ( ValueType::Array ), _aryValue ( array ) {}
+Value::Value ( const Array& array ) : _type ( ValueType::Array ), m_value ( array ) {}
 
-Value::Value ( const Object& obj ) : _type ( ValueType::Object ), _objValue ( obj ) {}
+Value::Value ( const Object& obj ) : _type ( ValueType::Object ), m_value ( obj ) {}
 
-Value::Value ( std::string&& value ) : _type ( ValueType::String ), _strValue ( move ( value ) ) {}
+Value::Value ( std::string&& value ) : _type ( ValueType::String ), m_value ( move ( value ) ) {}
 
-Value::Value ( Array&& array ) : _type ( ValueType::Array ), _aryValue ( move ( array ) ) {}
+Value::Value ( Array&& array ) : _type ( ValueType::Array ), m_value ( move ( array ) ) {}
 
-Value::Value ( Object&& obj ) : _type ( ValueType::Object ), _objValue ( move ( obj ) ) {}
+Value::Value ( Object&& obj ) : _type ( ValueType::Object ), m_value ( move ( obj ) ) {}
 
 Value::Value ( std::nullptr_t ) : _type ( ValueType::Null ) {}
 
-Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), _aryValue ( list ) {}
+Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), m_value ( list ) {}
 
 Value::Value ( const Value& other )
 {
 	_type = other._type;
 	switch ( other._type ) {
 	case ValueType::Int:
-		_intValue = other._intValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Double:
-		_dobValue = other._dobValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Bool:
-		_bolValue = other._bolValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::String:
-		_strValue = other._strValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Object:
-		_objValue = other._objValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Array:
-		_aryValue = other._aryValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Null:
 	default:
@@ -68,22 +68,22 @@ Value::Value ( Value&& other )
 	_type = other._type;
 	switch ( other._type ) {
 	case ValueType::Int:
-		_intValue = other._intValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Double:
-		_dobValue = other._dobValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Bool:
-		_bolValue = other._bolValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::String:
-		_strValue = move ( other._strValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Object:
-		_objValue = move ( other._objValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Array:
-		_aryValue = move ( other._aryValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Null:
 	default:
@@ -96,22 +96,22 @@ Value& Value::operator = ( const Value& other )
 	_type = other._type;
 	switch ( other._type ) {
 	case ValueType::Int:
-		_intValue = other._intValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Double:
-		_dobValue = other._dobValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Bool:
-		_bolValue = other._bolValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::String:
-		_strValue = other._strValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Object:
-		_objValue = other._objValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Array:
-		_aryValue = other._aryValue;
+		m_value = other.m_value;
 		break;
 	case ValueType::Null:
 	default:
@@ -126,22 +126,22 @@ Value& Value::operator = ( Value&& other )
 	_type = other._type;
 	switch ( other._type ) {
 	case ValueType::Int:
-		_intValue = move ( other._intValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Double:
-		_dobValue = move ( other._dobValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Bool:
-		_bolValue = move ( other._bolValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::String:
-		_strValue = move ( other._strValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Object:
-		_objValue = move ( other._objValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Array:
-		_aryValue = move ( other._aryValue );
+		m_value = move ( other.m_value );
 		break;
 	case ValueType::Null:
 	default:
@@ -161,7 +161,7 @@ Value& Value::operator[] ( const std::string& key )
 		throw std::string ( "Item is no Object" );
 
 
-	return _objValue[key];
+	return std::get<Object>(m_value)[key];
 }
 
 const Value& Value::operator[] ( const std::string& key ) const
@@ -170,7 +170,7 @@ const Value& Value::operator[] ( const std::string& key ) const
 		throw std::string ( "Item is no Object" );
 
 	try {
-		return _objValue.at ( key );
+		return std::get<Object>(m_value).at ( key );
 	} catch ( const std::out_of_range& oor ) {
 		//std::cerr << "Out of Range error (" << key << "): " << oor.what() << '\n';
 		return *this;
@@ -182,14 +182,14 @@ Value& Value::operator[] ( const int key )
 {
 	if ( _type != ValueType::Array )
 		throw std::string ( "Item is no Array" );
-	return _aryValue[key];
+	return std::get<Array>(m_value)[key];
 }
 
 const Value& Value::operator[] ( const int key ) const
 {
 	if ( _type != ValueType::Array )
 		throw std::string ( "Item is no Array" );
-	return _aryValue[key];
+	return std::get<Array>(m_value)[key];
 }
 
 
@@ -200,32 +200,32 @@ ValueType Value::type() const
 
 int Value::toInt() const
 {
-	return _intValue;
+	return std::get<int>(m_value);
 }
 
 double Value::toDouble() const
 {
-	return _dobValue;
+	return std::get<double>(m_value);
 }
 
 const std::string& Value::toString() const
 {
-	return _strValue;
+	return std::get<std::string>(m_value);
 }
 
 bool Value::toBool() const
 {
-	return _bolValue;
+	return std::get<bool>(m_value);
 }
 
 Array Value::toArray() const
 {
-	return _aryValue;
+	return std::get<Array>(m_value);
 }
 
 Object Value::toObject() const
 {
-	return _objValue;
+	return std::get<Object>(m_value);
 }
 
 static unsigned int indentLvl = 0;
@@ -274,22 +274,22 @@ std::ostream & operator<< ( std::ostream & os, const Value& val )
 {
 	switch ( val._type ) {
 	case ValueType::Int:
-		os << val._intValue;
+		os << std::get<int>(val.m_value);
 		break;
 	case ValueType::Double:
-		os << val._dobValue;
+		os << std::get<double>(val.m_value);
 		break;
 	case ValueType::Bool:
-		os << ( val._bolValue?"true":"false" );
+		os << ( std::get<bool>(val.m_value)?"true":"false" );
 		break;
 	case ValueType::String:
-		os << "\"" + val._strValue + "\"";
+		os << "\"" + std::get<std::string>(val.m_value) + "\"";
 		break;
 	case ValueType::Object:
-		os << val._objValue;
+		os << std::get<Object>(val.m_value);
 		break;
 	case ValueType::Array:
-		os << val._aryValue;
+		os << std::get<Array>(val.m_value);
 		break;
 	case ValueType::Null:
 		os << "null";
