@@ -11,3 +11,6 @@ set(include_dest "include/ccdJsonpp-${ccdJsonpp_VERSION}")
 set(lib_dest "lib/ccdJsonpp-${ccdJsonpp_VERSION}")
 
 add_subdirectory(src)
+
+install(EXPORT ccdJsonpp
+	DESTINATION "${lib_dest}")
