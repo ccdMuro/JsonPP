@@ -14,3 +14,5 @@ add_subdirectory(src)
 
 install(EXPORT ccdJsonpp
 	DESTINATION "${lib_dest}")
+install(FILES ccdJsonppConfig.cmake 
+	DESTINATION ${lib_dest})
