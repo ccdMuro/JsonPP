@@ -7,13 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(BUILD_SHARED_LIBS "Build as shared library" ON)
 
-add_library(ccdJsonpp
-	src/JsonPP.cpp
-	src/Value.cpp
-	)
+set(include_dest "include/ccdJsonpp-${ccdJsonpp_VERSION}")
+set(lib_dest "lib/ccdJsonpp-${ccdJsonpp_VERSION}")
 
-install(TARGETS ccdJsonpp DESTINATION lib)
-install(FILES 
-	include/Value.h
-	include/JsonPP.h
-	DESTINATION include)
+add_subdirectory(src)
