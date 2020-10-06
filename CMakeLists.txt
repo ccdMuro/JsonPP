@@ -12,7 +12,12 @@ set(lib_dest "lib/ccdJsonpp-${ccdJsonpp_VERSION}")
 
 add_subdirectory(src)
 
+configure_file(ccdJsonppConfigVersion.cmake.in 
+	${CMAKE_CURRENT_BINARY_DIR}/ccdJsonppConfigVersion.cmake
+	@ONLY)
+
 install(EXPORT ccdJsonpp
 	DESTINATION "${lib_dest}")
 install(FILES ccdJsonppConfig.cmake 
+	${CMAKE_CURRENT_BINARY_DIR}/ccdJsonppConfigVersion.cmake
 	DESTINATION ${lib_dest})
