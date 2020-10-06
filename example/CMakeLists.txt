@@ -13,6 +13,6 @@ set(example_JsonPP_SRCS
 
 add_executable(example_JsonPP ${example_JsonPP_SRCS})
 
-find_package(ccdJsonpp REQUIRED)
+find_package(ccdJsonpp 1.0 REQUIRED)
 target_link_libraries(example_JsonPP PUBLIC ccdJsonpp)
 
