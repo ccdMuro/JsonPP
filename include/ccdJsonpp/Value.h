@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <variant>
 #include <initializer_list>
 
 namespace Ccd {
@@ -27,14 +28,7 @@ using Array = std::vector<Value>;
 class Value
 {
 	ValueType _type = ValueType::Null;
-
-	int _intValue = 0;
-	double _dobValue = 0.0;
-	bool _bolValue = false;
-	std::string _strValue = {};
-	
-	Object _objValue = {};
-	Array _aryValue = {};
+	std::variant<int, double, bool, std::string, Object, Array> m_value {};
 
 public:
 	Value();
@@ -62,12 +56,12 @@ public:
 	Value& operator[](const int key);
 	const Value& operator[](const int key) const;
 
-	explicit operator double() const { return _dobValue; }
-	explicit operator int() const { return _intValue; }
-	explicit operator bool() const { return _bolValue; }
-	explicit operator std::string () const { return _strValue; }
-	operator Object () const { return _objValue; }
-	operator Array () const { return _aryValue; }
+	explicit operator double() const { return std::get<double>(m_value); }
+	explicit operator int() const { return std::get<int>(m_value); }
+	explicit operator bool() const { return std::get<bool>(m_value); }
+	explicit operator std::string () const { return std::get<std::string>(m_value); }
+	operator Object () const { return std::get<Object>(m_value); }
+	operator Array () const { return std::get<Array>(m_value); }
 
 	friend std::ostream& operator<<(std::ostream& os, const Value& val);
 	

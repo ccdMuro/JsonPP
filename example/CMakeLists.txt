@@ -13,12 +13,6 @@ set(example_JsonPP_SRCS
 
 add_executable(example_JsonPP ${example_JsonPP_SRCS})
 
-find_package(PkgConfig REQUIRED)
-
-pkg_check_modules(JSONPP REQUIRED libjsonpp-0.1)
-target_link_libraries(example_JsonPP PUBLIC ${JSONPP_LIBRARIES})
-target_link_options(example_JsonPP PUBLIC ${JSONPP_LDFLAGS})
-
-install(TARGETS example_JsonPP
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/usr/bin)
+find_package(ccdJsonpp 1.0 REQUIRED)
+target_link_libraries(example_JsonPP PUBLIC ccdJsonpp)
 
