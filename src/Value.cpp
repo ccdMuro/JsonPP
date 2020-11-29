@@ -35,119 +35,29 @@ Value::Value ( std::nullptr_t ) : _type ( ValueType::Null ) {}
 
 Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), m_value ( list ) {}
 
-Value::Value ( const Value& other )
+Value::Value ( const Value& other ) : 
+	_type { other._type },
+	m_value { other.m_value }
 {
-	_type = other._type;
-	switch ( other._type ) {
-	case ValueType::Int:
-		m_value = other.m_value;
-		break;
-	case ValueType::Double:
-		m_value = other.m_value;
-		break;
-	case ValueType::Bool:
-		m_value = other.m_value;
-		break;
-	case ValueType::String:
-		m_value = other.m_value;
-		break;
-	case ValueType::Object:
-		m_value = other.m_value;
-		break;
-	case ValueType::Array:
-		m_value = other.m_value;
-		break;
-	case ValueType::Null:
-	default:
-		break;
-	}
 }
 
-Value::Value ( Value&& other )
+Value::Value ( Value&& other ) :
+	_type { std::move ( other._type ) },
+	m_value { std::move ( other.m_value ) }
 {
-	_type = other._type;
-	switch ( other._type ) {
-	case ValueType::Int:
-		m_value = other.m_value;
-		break;
-	case ValueType::Double:
-		m_value = other.m_value;
-		break;
-	case ValueType::Bool:
-		m_value = other.m_value;
-		break;
-	case ValueType::String:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Object:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Array:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Null:
-	default:
-		break;
-	}
 }
 
 Value& Value::operator = ( const Value& other )
 {
 	_type = other._type;
-	switch ( other._type ) {
-	case ValueType::Int:
-		m_value = other.m_value;
-		break;
-	case ValueType::Double:
-		m_value = other.m_value;
-		break;
-	case ValueType::Bool:
-		m_value = other.m_value;
-		break;
-	case ValueType::String:
-		m_value = other.m_value;
-		break;
-	case ValueType::Object:
-		m_value = other.m_value;
-		break;
-	case ValueType::Array:
-		m_value = other.m_value;
-		break;
-	case ValueType::Null:
-	default:
-		break;
-	}
-
+	m_value = other.m_value;
 	return *this;
 }
 
 Value& Value::operator = ( Value&& other )
 {
 	_type = other._type;
-	switch ( other._type ) {
-	case ValueType::Int:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Double:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Bool:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::String:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Object:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Array:
-		m_value = move ( other.m_value );
-		break;
-	case ValueType::Null:
-	default:
-		break;
-	}
-
+	m_value = std::move ( other.m_value );
 	return *this;
 }
 
