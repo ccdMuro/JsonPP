@@ -1,6 +1,7 @@
 JsonPP
 ======
 
+
 A C++ Library providing a `std::string` parser for JavaScript Object Notation. The STL container are in favor to represent the Json entities: Object, Array and Value.
 
 Requirements
@@ -60,3 +61,11 @@ auto newObj = Ccd::Json::Object {
 auto newJsonString = JsonPP::stringFromObject(newObj);
 
 ```
+
+License
+-------
+
+This software is licensed under the [LGPL v3 license][lgpl].
+© 2020 Karl Herbig
+
+[lgpl]: https://www.gnu.org/licenses/lgpl-3.0.en.html
