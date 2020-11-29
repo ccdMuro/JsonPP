@@ -138,9 +138,7 @@ Object Value::toObject() const
 	return std::get<Object>(m_value);
 }
 
-static unsigned int indentLvl = 0;
-
-inline static void indent ( std::ostream& os )
+inline static void indent ( std::ostream& os, const int indentLvl )
 {
 	for ( auto indentIdx = 0u ; indentIdx < indentLvl; indentIdx++ ) {
 		os << "\t";
@@ -149,19 +147,21 @@ inline static void indent ( std::ostream& os )
 
 std::ostream& operator<< ( std::ostream& os, const Object& obj )
 {
-	os << "{" << std::endl;
+	static const int indentLvlIdx =  os.xalloc();
+	auto& indentLvl = os.iword(indentLvlIdx);
+	os << "{\n";
 	indentLvl++;
 
 	for ( auto item = obj.begin() ; item != obj.end(); ) {
-		indent ( os );
+		indent ( os, indentLvl );
 		os << "\"" + item->first + "\":" << item->second;
 		if ( ++item != obj.end() )
-			os << "," << std::endl;
+			os << ",\n";
 	}
-	os << std::endl;
+	os << "\n";
 
 	indentLvl--;
-	indent ( os );
+	indent ( os, indentLvl );
 	os << "}";
 
 	return os;
