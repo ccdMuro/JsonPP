@@ -9,65 +9,65 @@ namespace Ccd
 namespace Json
 {
 
-Value::Value() : _type ( ValueType::Null ) {}
+Value::Value() : m_type ( ValueType::Null ) {}
 
-Value::Value ( const int value ) : _type ( ValueType::Int ), m_value ( value ) { }
+Value::Value ( const int value ) : m_type ( ValueType::Int ), m_value ( value ) { }
 
-Value::Value ( const double value ) : _type ( ValueType::Double ), m_value ( value ) {}
+Value::Value ( const double value ) : m_type ( ValueType::Double ), m_value ( value ) {}
 
-Value::Value ( const bool value ) : _type ( ValueType::Bool ), m_value ( value ) {}
+Value::Value ( const bool value ) : m_type ( ValueType::Bool ), m_value ( value ) {}
 
-Value::Value ( const std::string& value ) : _type ( ValueType::String ), m_value ( value ) {}
+Value::Value ( const std::string& value ) : m_type ( ValueType::String ), m_value ( value ) {}
 
-Value::Value ( const char* value ) : _type ( ValueType::String ), m_value {std::move(std::string{value})} {}
+Value::Value ( const char* value ) : m_type ( ValueType::String ), m_value {std::move(std::string{value})} {}
 
-Value::Value ( const Array& array ) : _type ( ValueType::Array ), m_value ( array ) {}
+Value::Value ( const Array& array ) : m_type ( ValueType::Array ), m_value ( array ) {}
 
-Value::Value ( const Object& obj ) : _type ( ValueType::Object ), m_value ( obj ) {}
+Value::Value ( const Object& obj ) : m_type ( ValueType::Object ), m_value ( obj ) {}
 
-Value::Value ( std::string&& value ) : _type ( ValueType::String ), m_value ( move ( value ) ) {}
+Value::Value ( std::string&& value ) : m_type ( ValueType::String ), m_value ( move ( value ) ) {}
 
-Value::Value ( Array&& array ) : _type ( ValueType::Array ), m_value ( move ( array ) ) {}
+Value::Value ( Array&& array ) : m_type ( ValueType::Array ), m_value ( move ( array ) ) {}
 
-Value::Value ( Object&& obj ) : _type ( ValueType::Object ), m_value ( move ( obj ) ) {}
+Value::Value ( Object&& obj ) : m_type ( ValueType::Object ), m_value ( move ( obj ) ) {}
 
-Value::Value ( std::nullptr_t ) : _type ( ValueType::Null ) {}
+Value::Value ( std::nullptr_t ) : m_type ( ValueType::Null ) {}
 
-Value::Value ( const initializer_list<Value> list ) : _type ( ValueType::Array ), m_value ( list ) {}
+Value::Value ( const initializer_list<Value> list ) : m_type ( ValueType::Array ), m_value ( list ) {}
 
 Value::Value ( const Value& other ) : 
-	_type { other._type },
+	m_type { other.m_type },
 	m_value { other.m_value }
 {
 }
 
 Value::Value ( Value&& other ) :
-	_type { std::move ( other._type ) },
+	m_type { std::move ( other.m_type ) },
 	m_value { std::move ( other.m_value ) }
 {
 }
 
 Value& Value::operator = ( const Value& other )
 {
-	_type = other._type;
+	m_type = other.m_type;
 	m_value = other.m_value;
 	return *this;
 }
 
 Value& Value::operator = ( Value&& other )
 {
-	_type = other._type;
+	m_type = other.m_type;
 	m_value = std::move ( other.m_value );
 	return *this;
 }
 
 Value& Value::operator[] ( const std::string& key )
 {
-	if ( _type == ValueType::Null ) {
-		_type = ValueType::Object;
+	if ( m_type == ValueType::Null ) {
+		m_type = ValueType::Object;
 	}
 
-	if ( _type != ValueType::Object )
+	if ( m_type != ValueType::Object )
 		throw std::string ( "Item is no Object" );
 
 
@@ -76,7 +76,7 @@ Value& Value::operator[] ( const std::string& key )
 
 const Value& Value::operator[] ( const std::string& key ) const
 {
-	if ( _type != ValueType::Object )
+	if ( m_type != ValueType::Object )
 		throw std::string ( "Item is no Object" );
 
 	try {
@@ -90,14 +90,14 @@ const Value& Value::operator[] ( const std::string& key ) const
 
 Value& Value::operator[] ( const int key )
 {
-	if ( _type != ValueType::Array )
+	if ( m_type != ValueType::Array )
 		throw std::string ( "Item is no Array" );
 	return std::get<Array>(m_value)[key];
 }
 
 const Value& Value::operator[] ( const int key ) const
 {
-	if ( _type != ValueType::Array )
+	if ( m_type != ValueType::Array )
 		throw std::string ( "Item is no Array" );
 	return std::get<Array>(m_value)[key];
 }
@@ -105,7 +105,7 @@ const Value& Value::operator[] ( const int key ) const
 
 ValueType Value::type() const
 {
-	return _type;
+	return m_type;
 }
 
 int Value::toInt() const
@@ -182,7 +182,7 @@ std::ostream & operator<< ( std::ostream & os, const Array& array )
 
 std::ostream & operator<< ( std::ostream & os, const Value& val )
 {
-	switch ( val._type ) {
+	switch ( val.m_type ) {
 	case ValueType::Int:
 		os << std::get<int>(val.m_value);
 		break;

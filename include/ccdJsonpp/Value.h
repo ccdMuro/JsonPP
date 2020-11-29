@@ -27,7 +27,7 @@ using Array = std::vector<Value>;
 
 class Value
 {
-	ValueType _type = ValueType::Null;
+	ValueType m_type = ValueType::Null;
 	std::variant<int, double, bool, std::string, Object, Array> m_value {};
 
 public:
