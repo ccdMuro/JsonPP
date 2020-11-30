@@ -182,24 +182,24 @@ std::ostream & operator<< ( std::ostream & os, const Array& array )
 
 std::ostream & operator<< ( std::ostream & os, const Value& val )
 {
-	switch ( val.m_type ) {
+	switch ( val.type() ) {
 	case ValueType::Int:
-		os << std::get<int>(val.m_value);
+		os << static_cast<int>(val);
 		break;
 	case ValueType::Double:
-		os << std::get<double>(val.m_value);
+		os << static_cast<double>(val);
 		break;
 	case ValueType::Bool:
-		os << ( std::get<bool>(val.m_value)?"true":"false" );
+		os << ( static_cast<bool>(val)?"true":"false" );
 		break;
 	case ValueType::String:
-		os << "\"" + std::get<std::string>(val.m_value) + "\"";
+		os << "\"" + static_cast<std::string>(val) + "\"";
 		break;
 	case ValueType::Object:
-		os << std::get<Object>(val.m_value);
+		os << static_cast<Object>(val);
 		break;
 	case ValueType::Array:
-		os << std::get<Array>(val.m_value);
+		os << static_cast<Array>(val);
 		break;
 	case ValueType::Null:
 		os << "null";

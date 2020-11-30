@@ -63,8 +63,6 @@ public:
 	operator Object () const { return std::get<Object>(m_value); }
 	operator Array () const { return std::get<Array>(m_value); }
 
-	friend std::ostream& operator<<(std::ostream& os, const Value& val);
-	
 	ValueType type() const;
 	
 	int toInt() const;
@@ -75,6 +73,11 @@ public:
 	Array toArray() const;
 	Object toObject() const;
 };
+
+std::ostream& operator<<(std::ostream& os, const Value& val);
+std::ostream& operator<<(std::ostream& os, const Object& val);
+std::ostream& operator<<(std::ostream& os, const Array& val);
+
 
 }
 }
