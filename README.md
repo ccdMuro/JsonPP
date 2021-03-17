@@ -66,6 +66,6 @@ License
 -------
 
 This software is licensed under the [LGPL v3 license][lgpl].
-© 2020 Karl Herbig
+© 2021 Karl Herbig
 
 [lgpl]: https://www.gnu.org/licenses/lgpl-3.0.en.html
