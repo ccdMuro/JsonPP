@@ -89,5 +89,23 @@ int main(int args, char** argv)
 	std::cout << "User age:\n";
 	std::cout << "==> " << userName << " " << userAge << "\n";
 
+	// Example 4
+	// Move semantics
+	std::cout << "\n";
+	std::cout << "########## Example 4 #########" << "\n";
+	std::cout << "std::move Ccd::Json::Object values\n";
+	std::cout << "##############################" << "\n";
+
+	std::cout << "original Object:\n";
+	std::cout << "==> " << jOb << "\n";
+
+	auto movedJOb = std::move(jOb);
+
+	std::cout << "new Object (moved to):\n";
+	std::cout << "==> " << movedJOb << "\n";
+
+	std::cout << "original Object (after move):\n";
+	std::cout << "==> " << jOb << "\n";
+
 	return 0;
 }
