@@ -1,7 +1,6 @@
 JsonPP
 ======
 
-
 A C++ Library providing a `std::string` parser for JavaScript Object Notation. The STL container are in favor to represent the Json entities: Object, Array and Value.
 
 Requirements
