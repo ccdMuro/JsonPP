@@ -9,31 +9,31 @@ namespace Ccd
 namespace Json
 {
 
-Value::Value() : m_type ( ValueType::Null ) {}
+Value::Value() : m_type ( Type::Null ) {}
 
-Value::Value ( const int value ) : m_type ( ValueType::Int ), m_value ( value ) { }
+Value::Value ( const int value ) : m_type ( Type::Int ), m_value ( value ) { }
 
-Value::Value ( const double value ) : m_type ( ValueType::Double ), m_value ( value ) {}
+Value::Value ( const double value ) : m_type ( Type::Double ), m_value ( value ) {}
 
-Value::Value ( const bool value ) : m_type ( ValueType::Bool ), m_value ( value ) {}
+Value::Value ( const bool value ) : m_type ( Type::Bool ), m_value ( value ) {}
 
-Value::Value ( const std::string& value ) : m_type ( ValueType::String ), m_value ( value ) {}
+Value::Value ( const std::string& value ) : m_type ( Type::String ), m_value ( value ) {}
 
-Value::Value ( const char* value ) : m_type ( ValueType::String ), m_value {std::move(std::string{value})} {}
+Value::Value ( const char* value ) : m_type ( Type::String ), m_value {std::move(std::string{value})} {}
 
-Value::Value ( const Array& array ) : m_type ( ValueType::Array ), m_value ( array ) {}
+Value::Value ( const Array& array ) : m_type ( Type::Array ), m_value ( array ) {}
 
-Value::Value ( const Object& obj ) : m_type ( ValueType::Object ), m_value ( obj ) {}
+Value::Value ( const Object& obj ) : m_type ( Type::Object ), m_value ( obj ) {}
 
-Value::Value ( std::string&& value ) : m_type ( ValueType::String ), m_value ( move ( value ) ) {}
+Value::Value ( std::string&& value ) : m_type ( Type::String ), m_value ( move ( value ) ) {}
 
-Value::Value ( Array&& array ) : m_type ( ValueType::Array ), m_value ( move ( array ) ) {}
+Value::Value ( Array&& array ) : m_type ( Type::Array ), m_value ( move ( array ) ) {}
 
-Value::Value ( Object&& obj ) : m_type ( ValueType::Object ), m_value ( move ( obj ) ) {}
+Value::Value ( Object&& obj ) : m_type ( Type::Object ), m_value ( move ( obj ) ) {}
 
-Value::Value ( std::nullptr_t ) : m_type ( ValueType::Null ) {}
+Value::Value ( std::nullptr_t ) : m_type ( Type::Null ) {}
 
-Value::Value ( const initializer_list<Value> list ) : m_type ( ValueType::Array ), m_value ( list ) {}
+Value::Value ( const initializer_list<Value> list ) : m_type ( Type::Array ), m_value ( list ) {}
 
 Value::Value ( const Value& other ) : 
 	m_type { other.m_type },
@@ -63,11 +63,11 @@ Value& Value::operator = ( Value&& other )
 
 Value& Value::operator[] ( const std::string& key )
 {
-	if ( m_type == ValueType::Null ) {
-		m_type = ValueType::Object;
+	if ( m_type == Type::Null ) {
+		m_type = Type::Object;
 	}
 
-	if ( m_type != ValueType::Object )
+	if ( m_type != Type::Object )
 		throw std::string ( "Item is no Object" );
 
 
@@ -76,7 +76,7 @@ Value& Value::operator[] ( const std::string& key )
 
 const Value& Value::operator[] ( const std::string& key ) const
 {
-	if ( m_type != ValueType::Object )
+	if ( m_type != Type::Object )
 		throw std::string ( "Item is no Object" );
 
 	try {
@@ -90,20 +90,20 @@ const Value& Value::operator[] ( const std::string& key ) const
 
 Value& Value::operator[] ( const int key )
 {
-	if ( m_type != ValueType::Array )
+	if ( m_type != Type::Array )
 		throw std::string ( "Item is no Array" );
 	return std::get<Array>(m_value)[key];
 }
 
 const Value& Value::operator[] ( const int key ) const
 {
-	if ( m_type != ValueType::Array )
+	if ( m_type != Type::Array )
 		throw std::string ( "Item is no Array" );
 	return std::get<Array>(m_value)[key];
 }
 
 
-ValueType Value::type() const
+Value::Type Value::type() const
 {
 	return m_type;
 }
@@ -183,25 +183,25 @@ std::ostream & operator<< ( std::ostream & os, const Array& array )
 std::ostream & operator<< ( std::ostream & os, const Value& val )
 {
 	switch ( val.type() ) {
-	case ValueType::Int:
+	case Value::Type::Int:
 		os << static_cast<int>(val);
 		break;
-	case ValueType::Double:
+	case Value::Type::Double:
 		os << static_cast<double>(val);
 		break;
-	case ValueType::Bool:
+	case Value::Type::Bool:
 		os << ( static_cast<bool>(val)?"true":"false" );
 		break;
-	case ValueType::String:
+	case Value::Type::String:
 		os << "\"" + static_cast<std::string>(val) + "\"";
 		break;
-	case ValueType::Object:
+	case Value::Type::Object:
 		os << static_cast<Object>(val);
 		break;
-	case ValueType::Array:
+	case Value::Type::Array:
 		os << static_cast<Array>(val);
 		break;
-	case ValueType::Null:
+	case Value::Type::Null:
 		os << "null";
 		break;
 	default:

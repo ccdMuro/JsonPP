@@ -10,16 +10,6 @@
 namespace Ccd {
 namespace Json {
 	
-enum class ValueType {
-	Int = 0,
-	Double,
-	Bool,
-	String,
-	Object,
-	Array,
-	Null
-};
-
 class Value;
 
 using Object = std::map<std::string,Value>;
@@ -27,10 +17,17 @@ using Array = std::vector<Value>;
 
 class Value
 {
-	ValueType m_type = ValueType::Null;
-	std::variant<int, double, bool, std::string, Object, Array> m_value {};
-
 public:
+	enum class Type {
+		Int = 0,
+		Double,
+		Bool,
+		String,
+		Object,
+		Array,
+		Null
+	};
+
 	Value();
 	Value(const int value);
 	Value(const double value);
@@ -63,7 +60,7 @@ public:
 	operator Object () const { return std::get<Object>(m_value); }
 	operator Array () const { return std::get<Array>(m_value); }
 
-	ValueType type() const;
+	Type type() const;
 	
 	int toInt() const;
 	double toDouble() const;
@@ -72,6 +69,11 @@ public:
 	
 	Array toArray() const;
 	Object toObject() const;
+	
+private:
+	Type m_type = Type::Null;
+	std::variant<int, double, bool, std::string, Object, Array> m_value {};
+
 };
 
 std::ostream& operator<<(std::ostream& os, const Value& val);

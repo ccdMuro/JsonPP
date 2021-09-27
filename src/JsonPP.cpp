@@ -65,7 +65,7 @@ Value arrayFromString(const std::string& jsonString)
 			// objectFromJson querry recursively
 			auto subObject = objectFromString(jsonString.substr(newBeginPos,
 				newEndPos - newBeginPos + 1));
-			if (subObject.type() == ValueType::Null) {
+			if (subObject.type() == Value::Type::Null) {
 				std::cout << "subObject ist nullptr" << std::endl;
 				return newValue;
 			}
@@ -312,7 +312,7 @@ Value objectFromString(const std::string& jsonString)
 			// objectFromJson querry recursively
 			auto subObject = objectFromString(jsonString.substr(newBeginPos,
 				newEndPos - newBeginPos + 1));
-			if (subObject.type() == ValueType::Null) {
+			if (subObject.type() == Value::Type::Null) {
 				std::cout << "subObject ist nullptr" << std::endl;
 				return newValue;
 			}
