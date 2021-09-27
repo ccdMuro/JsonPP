@@ -27,7 +27,7 @@ int main(int args, char** argv)
 	std::cout << "iostream << value:\n";
 	std::cout << "==>\n";
 	std::cout << "PI: " << jOb["pi"];
-	std::cout << "\n==>\n\n";
+	std::cout << "\n<==\n\n";
 
 	// Read element and write to variable
 	// If writing to variable use access method like
@@ -37,7 +37,7 @@ int main(int args, char** argv)
 	std::cout << "copy to variable:\n";
 	std::cout << "==>\n";
 	std::cout << "Name/Age: " << userName << "/" << userAge;
-	std::cout << "\n==>\n\n";
+	std::cout << "\n<==\n\n";
 
 	// Access array elements in a for loop
 	std::cout << "Array elements in a loop:\n";
@@ -45,7 +45,7 @@ int main(int args, char** argv)
 	for ( const auto& color : jOb["colors"].toArray()) {
 		std::cout << "color: " << color << "\n";
 	}
-	std::cout << "\n==>\n\n";
+	std::cout << "<==\n\n";
 	
 	return 0;
 }

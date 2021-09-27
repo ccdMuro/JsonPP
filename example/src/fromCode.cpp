@@ -38,7 +38,7 @@ int main(int args, char** argv)
 
 	std::cout << "==>\n";
 	std::cout << jOb;
-	std::cout << "\n==>\n\n";
+	std::cout << "\n<==\n\n";
 
 	return 0;
 }
