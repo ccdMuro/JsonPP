@@ -1,69 +1,91 @@
 JsonPP
 ======
 
-A C++ Library providing a `std::string` parser for JavaScript Object Notation. The STL container are in favor to represent the Json entities: Object, Array and Value.
+A C++ Library providing a `std::string` parser for JavaScript Object Notation aka JSON.
+The STL containers are in favor to represent the Json entities: Object, Array and Value.
 
 Requirements
 ------------
-C++17 standard is required to compile the library.
+C++17 standard is required to compile the library. 
+Also cmake is recommended for building and installation.
+
+Build and Install
+-----------------
+Use the default cmake procedure to build and install the library on your system.
+```sh
+git clone https://github.com/ccdMuro/JsonPP.git
+cmake -B bld_jsonpp -S JsonPP
+cmake --build bld_jsonpp
+sudo cmake --install bld_jsonpp
+```
+
+Use in your project
+-------------------
+Add these lines to your CMakeLists.txt (*maybe adjust the target signature*):
+```cmake
+find_package(ccdJsonpp 1.0 REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC ccdJsonpp)
+```
 
 Code Example
 ------------
-
-Json:
-```json
-{
-	"user_name":"ccdMuro",
-	"user_data":{
-		"hobbies":["coding", "gaming"],
-		"age":1337
-	}
-}
-```
-
-C++:
+### Simple value access:
+Serialisation into `std::iostream` build in.
 ```cpp
-#include <JsonPP.h>
-using namespace Ccd::Json;
-
-...
-// get your Json somehow and store it into the std::string
-...
-
-// create Ccd::Json::Object from string
-auto jsonObject = JsonPP::objectFromString(myJsonString);
-
-// now access the object values with the subscript operator[]
-auto userName = jsonObject["user_name"].toString();
-
-// instead of the access method you can use an explicit cast
-auto userAge = stati_cast<int>(jsonObject["user_data"]["age"]);
-
-// STL container std::vector as Ccd::Json::Array backend 
-for ( auto hobby : jsonObject["user_data"]["hobbies"].toArray()){
-	// with stream operator<< support for std::iostream
-	std::cout << hobby;
-}
-
-// create your own data from scratch
-auto newObj = Ccd::Json::Object {
-		{"user_name","newUser"},
-		{"user_data", 
-			Ccd::Json::Object {
-				{"age", 42},
-				{"hobbies", { "reading", "painting" } }
-			}
-		}
-	};
-
-// and turn it into a std::string
-auto newJsonString = JsonPP::stringFromObject(newObj);
-
+std::cout << jsonObject["userData"] << "\n";
 ```
+---
+Verify type.
+```cpp
+if ( jsonObject["userData"].type() == Ccd::Json::ValueType::Object)
+{
+	// ...
+}
+```
+---
+Access the object values with the subscript operator[],
+with the access method or an explicit cast
+```cpp
+auto msgId_a = jsonObject["messageID"].toInt();
+auto msgId_b = static_cast<int>(jsonObject["messageID"]);
+```
+---
+Write/Assign values.
+```cpp
+jsonObject["timeStamp"] = secondsSinceEpoch;
+```
+
+### Array value access: 
+STL container `std::vector` is used as Ccd::Json::Array backend.
+Write loops as usual.
+```cpp
+for ( const auto& attribute : jsonObject["attributes"].toArray() ) {
+	// ...
+}
+```
+
+### Build Objects from scratch
+```cpp
+auto jsonObject = Ccd::Json::Object {};
+jsonObject["colors"] = { "red", "green", "blue" };
+jsonObject["user"] = Ccd::Json::Object{
+	{"name","alice"},
+	{"age",20},
+	{"size",1.90},
+	{"hobbies", { "reading", "rock music" }}
+};
+```
+
+### Parse a `std::string`
+```cpp
+auto jsonObject = Ccd::Json::objectFromString(JSONstring);
+```
+
+### Example Code
+Some working examples can be found in the `example` folder.
 
 License
 -------
-
 This software is licensed under the [LGPL v3 license][lgpl].
 © 2021 Karl Herbig
 
