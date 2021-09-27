@@ -8,7 +8,7 @@ using namespace std;
 namespace Ccd {
 namespace Json {
 
-Value JsonPP::arrayFromString(const std::string& jsonString)
+Value arrayFromString(const std::string& jsonString)
 {
 	// make shure that decimal delimiter is a dot '.'
 	std::setlocale(LC_NUMERIC, "C");
@@ -212,7 +212,7 @@ Value JsonPP::arrayFromString(const std::string& jsonString)
 	return newValue;
 }
 
-Value JsonPP::objectFromString(const std::string& jsonString)
+Value objectFromString(const std::string& jsonString)
 {
 	// make shure that decimal delimiter is a dot '.'
 	std::setlocale(LC_NUMERIC, "C");
@@ -458,14 +458,14 @@ Value JsonPP::objectFromString(const std::string& jsonString)
 	return newValue;
 }
 
-std::string JsonPP::stringFromObject ( const Object& jsonObject )
+std::string stringFromObject ( const Object& jsonObject )
 {
 	std::stringstream jss;
 	jss << jsonObject;
 	return jss.str();
 }
 
-std::string JsonPP::stringFromArray( const Array& jsonArray )
+std::string stringFromArray( const Array& jsonArray )
 {
 	std::stringstream jss;
 	jss << jsonArray;
