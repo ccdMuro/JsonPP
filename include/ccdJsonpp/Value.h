@@ -7,7 +7,7 @@
 #include <variant>
 #include <initializer_list>
 
-namespace Ccd {
+namespace ccd {
 namespace Json {
 	
 class Value;

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace Ccd {
+namespace ccd {
 namespace Json {
 
 Value arrayFromString(const std::string& jsonString)

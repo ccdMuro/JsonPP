@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-namespace Ccd {
+namespace ccd {
 namespace Json {
 
 Value objectFromString(const std::string& jsonString);
