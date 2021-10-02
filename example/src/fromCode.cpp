@@ -4,11 +4,11 @@
 int main(int args, char** argv)
 {
 	std::cout << "##### Example - from Code #####\n";
-	std::cout << "Ccd::Json::Object from scrach\n";
+	std::cout << "ccd::Json::Object from scrach\n";
 	std::cout << "###############################\n";
 
-	// Create Ccd::Json::Object manualy
-	auto jOb = Ccd::Json::Object {};
+	// Create ccd::Json::Object manualy
+	auto jOb = ccd::Json::Object {};
 	
 	// value - string 
 	jOb["Hello"] = "World";
@@ -29,7 +29,7 @@ int main(int args, char** argv)
 	jOb["colors"] = { "red", "green", "blue" };
 
 	// value - object
-	jOb["user"] = Ccd::Json::Object{
+	jOb["user"] = ccd::Json::Object{
 			{"name","max"},
 			{"age",18},
 			{"size",1.90},

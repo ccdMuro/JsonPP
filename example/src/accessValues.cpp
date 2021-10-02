@@ -3,14 +3,14 @@
 
 int main(int args, char** argv)
 {
-	auto jOb = Ccd::Json::Object {
+	auto jOb = ccd::Json::Object {
 			{"hello", "world"},
 			{"answer", 42},
 			{"pi", 3.14159},
 			{"valid", true},
 			{"empty", nullptr},
 			{"colors", {"red", "green", "blue"}},
-			{"user", Ccd::Json::Object{
+			{"user", ccd::Json::Object{
 				{"name","max"},
 				{"age",20},
 				{"size",1.90},
@@ -18,11 +18,11 @@ int main(int args, char** argv)
 
 	std::cout << "\n";
 	std::cout << "##### Example - access Values #####\n";
-	std::cout << "Access Ccd::Json::Object values\n";
+	std::cout << "Access ccd::Json::Object values\n";
 	std::cout << "###################################\n";
 	
 	// If using operator<< of an iostream
-	// there is no need to cast the Ccd::Json
+	// there is no need to cast the ccd::Json
 	// into explicit type 
 	std::cout << "iostream << value:\n";
 	std::cout << "==>\n";
