@@ -128,12 +128,12 @@ bool Value::toBool() const
 	return std::get<bool>(m_value);
 }
 
-Array Value::toArray() const
+const Array& Value::toArray() const
 {
 	return std::get<Array>(m_value);
 }
 
-Object Value::toObject() const
+const Object& Value::toObject() const
 {
 	return std::get<Object>(m_value);
 }
@@ -152,10 +152,10 @@ std::ostream& operator<< ( std::ostream& os, const Object& obj )
 	os << "{\n";
 	indentLvl++;
 
-	for ( auto item = obj.begin() ; item != obj.end(); ) {
+	for ( auto item = obj.cbegin() ; item != obj.cend(); ++item ) {
 		indent ( os, indentLvl );
-		os << "\"" + item->first + "\":" << item->second;
-		if ( ++item != obj.end() )
+		os << "\"" << item->first << "\":" << item->second;
+		if ( std::next(item, 1) != obj.cend() )
 			os << ",\n";
 	}
 	os << "\n";
@@ -170,10 +170,11 @@ std::ostream& operator<< ( std::ostream& os, const Object& obj )
 std::ostream & operator<< ( std::ostream & os, const Array& array )
 {
 	os << "[";
-	for ( auto item = array.begin() ; item != array.end(); ) {
+	for ( auto item = array.cbegin() ; item != array.cend(); ++item ) {
 		os << *item;
-		if ( ++item != array.end() )
+		if ( std::next(item,1) != array.cend() ) {
 			os << ", ";
+		}
 	}
 	os << "]";
 
@@ -193,13 +194,13 @@ std::ostream & operator<< ( std::ostream & os, const Value& val )
 		os << ( static_cast<bool>(val)?"true":"false" );
 		break;
 	case Value::Type::String:
-		os << "\"" + static_cast<std::string>(val) + "\"";
+		os << "\"" << static_cast<const std::string&>(val) << "\"";
 		break;
 	case Value::Type::Object:
-		os << static_cast<Object>(val);
+		os << static_cast<const Object&>(val);
 		break;
 	case Value::Type::Array:
-		os << static_cast<Array>(val);
+		os << static_cast<const Array&>(val);
 		break;
 	case Value::Type::Null:
 		os << "null";

@@ -56,9 +56,9 @@ public:
 	explicit operator double() const { return std::get<double>(m_value); }
 	explicit operator int() const { return std::get<int>(m_value); }
 	explicit operator bool() const { return std::get<bool>(m_value); }
-	explicit operator std::string () const { return std::get<std::string>(m_value); }
-	operator Object () const { return std::get<Object>(m_value); }
-	operator Array () const { return std::get<Array>(m_value); }
+	explicit operator const std::string& () const { return std::get<std::string>(m_value); }
+	operator const Object& () const { return std::get<Object>(m_value); }
+	operator const Array& () const { return std::get<Array>(m_value); }
 
 	Type type() const;
 	
@@ -67,8 +67,8 @@ public:
 	const std::string& toString() const;
 	bool toBool() const;
 	
-	Array toArray() const;
-	Object toObject() const;
+	const Array& toArray() const;
+	const Object& toObject() const;
 	
 private:
 	Type m_type = Type::Null;

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <list>
 
 using namespace std;
 
@@ -13,8 +14,7 @@ Value arrayFromString(const std::string& jsonString)
 	// make shure that decimal delimiter is a dot '.'
 	std::setlocale(LC_NUMERIC, "C");
 
-	auto newArray = Array{};
-	auto newValue = Value(nullptr);
+	auto arrayValues = std::list<Value>{};
 
 	// check the borders
 	auto beginPos = jsonString.find_first_of('[');
@@ -23,7 +23,7 @@ Value arrayFromString(const std::string& jsonString)
 	// if borders can not be defined something is wrong
 	if (beginPos == string::npos || endPos == string::npos) {
 		cout << "can't tell beginning or end of array" << endl;
-		return newValue;
+		return nullptr;
 	}
 
 	// offset is one position after the beginning border
@@ -58,7 +58,7 @@ Value arrayFromString(const std::string& jsonString)
 			// if the count is different there is a syntax error
 			if (openCount != closeCount) {
 				cout << "could not tell end of new subObject" << endl;
-				return newValue;
+				return nullptr;
 			}
 
 			// if everything went right, set the dataName and start a new
@@ -67,10 +67,9 @@ Value arrayFromString(const std::string& jsonString)
 				newEndPos - newBeginPos + 1));
 			if (subObject.type() == Value::Type::Null) {
 				std::cout << "subObject ist nullptr" << std::endl;
-				return newValue;
+				return nullptr;
 			}
-			//newJsonObject->subObj.emplace(dataName, move(subObject));
-			newArray.push_back(move(subObject));
+			arrayValues.push_back(move(subObject));
 			// set the offset to one position after the closing curly braces 
 			offset = newEndPos + 1;
 		}
@@ -81,14 +80,14 @@ Value arrayFromString(const std::string& jsonString)
 			auto endOfValue = jsonString.find_first_of('"', offset + 1);
 			if (endOfValue == string::npos) {
 				cout << "cant find end of value" << endl;
-				return newValue;
+				return nullptr;
 			}
 
 			// save the found value
 			auto value = jsonString.substr(beginOfValue, endOfValue - beginOfValue);
 
 			// add the found data to the object struct map
-			newArray.emplace_back(move(value));
+			arrayValues.emplace_back(move(value));
 
 			// set the offset to one position after the end of value
 			offset = endOfValue + 1;
@@ -106,7 +105,7 @@ Value arrayFromString(const std::string& jsonString)
 
 				if (!isdigit(jsonString.at(offset))) {
 					std::cout << "exptected digit" << std::endl;
-					return newValue;
+					return nullptr;
 				}
 				offset++;
 				while (isdigit(jsonString.at(offset))) {
@@ -115,13 +114,13 @@ Value arrayFromString(const std::string& jsonString)
 				//save the found double
 				auto value = stod(jsonString.substr(tempPos, offset - tempPos));
 				// add the found data to the object struct map
-				newArray.emplace_back(value);
+				arrayValues.emplace_back(value);
 			}
 			else {
 				// save the found int
 				auto value = stoi(jsonString.substr(tempPos, offset - tempPos));
 				// add the found data to the object struct map
-				newArray.emplace_back(value);
+				arrayValues.emplace_back(value);
 			}
 		}
 		//it could be an array
@@ -147,10 +146,10 @@ Value arrayFromString(const std::string& jsonString)
 			// if the count is different there is a syntax error
 			if (openCount != closeCount) {
 				cout << "could not tell end of new subObject" << endl;
-				return newValue;
+				return nullptr;
 			}
 			auto value = arrayFromString(jsonString.substr(offset));
-			newArray.push_back(move(value));
+			arrayValues.push_back(move(value));
 
 			offset = newEndPos + 1;
 		}
@@ -159,7 +158,7 @@ Value arrayFromString(const std::string& jsonString)
 		}
 		else if (jsonString.at(offset) == 't') {
 			if (jsonString.compare(offset, 4, "true") == 0) {
-				newArray.emplace_back(true);
+				arrayValues.emplace_back(true);
 				offset += 4;
 			}
 			else
@@ -167,7 +166,7 @@ Value arrayFromString(const std::string& jsonString)
 		}
 		else if (jsonString.at(offset) == 'f') {
 			if (jsonString.compare(offset, 5, "false") == 0) {
-				newArray.emplace_back(false);
+				arrayValues.emplace_back(false);
 				offset += 5;
 			}
 			else
@@ -175,16 +174,17 @@ Value arrayFromString(const std::string& jsonString)
 		}
 		else if (jsonString.at(offset) == 'n') {
 			if (jsonString.compare(offset, 4, "null") == 0) {
-				newArray.emplace_back(nullptr);
+				arrayValues.emplace_back(nullptr);
 				offset += 4;
 			}
 			else
 				offset++;
 		}
 		else {
-			cout << "invalid value " << jsonString.at(offset) << " offset " << offset << endl;
-			cout << jsonString << std::endl;
-			return newValue;
+			cout 	<< "invalid value " << jsonString.at(offset) 
+				<< " offset " << offset << endl
+				<< jsonString << std::endl;
+			return nullptr;
 		}
 
 		// find the next character
@@ -202,14 +202,14 @@ Value arrayFromString(const std::string& jsonString)
 		else {
 			std::cout << "syntax error!" << std::endl;
 			std::cout << jsonString.substr(offset);
-			return newValue;
+			return nullptr;
 		}
-
 	}
 
-	newValue = move(Value(move(newArray)));
-
-	return newValue;
+	return Array { 
+		std::make_move_iterator(std::begin(arrayValues)),
+		std::make_move_iterator(std::end(arrayValues))
+	};
 }
 
 Value objectFromString(const std::string& jsonString)
@@ -217,8 +217,7 @@ Value objectFromString(const std::string& jsonString)
 	// make shure that decimal delimiter is a dot '.'
 	std::setlocale(LC_NUMERIC, "C");
 	// prepare new struct
-	auto newJsonObject = Object{};
-	auto newValue = Value(nullptr);
+	auto newJsonObject = Object();
 
 	// check the borders
 	auto beginPos = jsonString.find_first_of('{');
@@ -227,7 +226,7 @@ Value objectFromString(const std::string& jsonString)
 	// if borders can not be defined something is wrong
 	if (beginPos == string::npos || endPos == string::npos) {
 		cout << "can't tell beginning or end of object" << endl;
-		return newValue;
+		return nullptr;
 	}
 
 	// offset is one position after the beginning border
@@ -247,14 +246,14 @@ Value objectFromString(const std::string& jsonString)
 			}
 			cout << "cant find beginning of dataName" << endl;
 			cout << "beginPos = " << beginPos << " value " << jsonString.at(beginPos) << endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// find the end of the string
 		endPos = jsonString.find_first_of('"', offset);
 		if (endPos == string::npos) {
 			cout << "cant find end of dataName" << endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// save the name to add it later to the map
@@ -265,21 +264,21 @@ Value objectFromString(const std::string& jsonString)
 		offset = jsonString.find_first_not_of({ ' ', 9, 10 , 13 }, offset);
 		if (offset == string::npos) {
 			cout << "cant find char after dataName" << endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// after the name string should folow a colon
 		if (jsonString.at(offset) != ':') {
 			cout << "invalide char after dataName. should be colon" << endl;
 			cout << jsonString.at(offset) << endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// find the next character after the colon
 		offset = jsonString.find_first_not_of({ ' ', 9, 10 , 13 }, offset + 1);
 		if (offset == string::npos) {
 			cout << "cant find value after colon" << endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// it could be ne new sub object
@@ -305,7 +304,7 @@ Value objectFromString(const std::string& jsonString)
 			// if the count is different there is a syntax error
 			if (openCount != closeCount) {
 				cout << "could not tell end of new subObject" << endl;
-				return newValue;
+				return nullptr;
 			}
 
 			// if everything went right, set the dataName and start a new
@@ -314,10 +313,9 @@ Value objectFromString(const std::string& jsonString)
 				newEndPos - newBeginPos + 1));
 			if (subObject.type() == Value::Type::Null) {
 				std::cout << "subObject ist nullptr" << std::endl;
-				return newValue;
+				return nullptr;
 			}
-			//newJsonObject->subObj.emplace(dataName, move(subObject));
-			newJsonObject.insert(make_pair(move(dataName), move(subObject)));
+			newJsonObject.emplace(dataName, move(subObject));
 
 			// set the offset to one position after the closing curly braces 
 			offset = newEndPos + 1;
@@ -329,14 +327,13 @@ Value objectFromString(const std::string& jsonString)
 			auto endOfValue = jsonString.find_first_of('"', offset + 1);
 			if (endOfValue == string::npos) {
 				cout << "cant find end of value" << endl;
-				return newValue;
+				return nullptr;
 			}
 
 			// save the found value
 			auto value = jsonString.substr(beginOfValue, endOfValue - beginOfValue);
 
 			// add the found data to the object struct map
-//			newJsonObject->data.emplace(dataName, value);
 			newJsonObject.insert(make_pair(move(dataName), move(value)));
 
 			// set the offset to one position after the end of value
@@ -355,7 +352,7 @@ Value objectFromString(const std::string& jsonString)
 
 				if (!isdigit(jsonString.at(offset))) {
 					std::cout << "exptected digit" << std::endl;
-					return newValue;
+					return nullptr;
 				}
 				offset++;
 				while (isdigit(jsonString.at(offset))) {
@@ -397,11 +394,11 @@ Value objectFromString(const std::string& jsonString)
 			// if the count is different there is a syntax error
 			if (openCount != closeCount) {
 				cout << "could not tell end of new subObject" << endl;
-				return newValue;
+				return nullptr;
 			}
 
 			auto arrayItem = arrayFromString(jsonString.substr(newBeginPos, newEndPos+1 - newBeginPos));
-			newJsonObject.insert(make_pair(move(dataName), move(arrayItem)));
+			newJsonObject.emplace(move(dataName), move(arrayItem));
 
 			offset = newEndPos + 1;
 		}
@@ -430,7 +427,7 @@ Value objectFromString(const std::string& jsonString)
 		else {
 			cout << "invalid value " << jsonString.at(offset) << endl;
 			cout << jsonString << std::endl;
-			return newValue;
+			return nullptr;
 		}
 
 		// find the next character
@@ -448,14 +445,12 @@ Value objectFromString(const std::string& jsonString)
 		else {
 			std::cout << "syntax error!" << std::endl;
 			std::cout << jsonString.substr(offset);
-			return newValue;
+			return nullptr;
 		}
 	}
 	
-	newValue = move(Value(move(newJsonObject)));
-
 	// if all went right, return the smart pointer to the parent object
-	return newValue;
+	return newJsonObject;
 }
 
 std::string stringFromObject ( const Object& jsonObject )
