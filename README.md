@@ -98,7 +98,7 @@ proprietary, trade-secret system that is not Free and Open Souce Software
 (FOSS).  We are deeply concerned about using a proprietary system like GitHub
 to develop our FOSS project. 
 
-This project has been migrated to [codeburg.org](https://codeberg.org/muro/JsonPP).
+This project has been migrated to [codeberg.org](https://codeberg.org/muro/JsonPP).
 
 We urge you to read about the [Give up GitHub](https://GiveUpGitHub.org) campaign from
 [the Software Freedom Conservancy](https://sfconservancy.org) to understand
