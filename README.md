@@ -91,7 +91,7 @@ This software is licensed under the [LGPL v3 license][lgpl].
 
 [lgpl]: https://www.gnu.org/licenses/lgpl-3.0.en.html
 
-== We're Using GitHub Under Protest ==
+## == We're Using GitHub Under Protest ==
 
 This project is currently hosted on GitHub.  This is not ideal; GitHub is a
 proprietary, trade-secret system that is not Free and Open Souce Software
